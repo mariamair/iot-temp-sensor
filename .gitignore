@@ -3,3 +3,7 @@ config.py
 *.bin
 /firmware.bin
 firmware.bin
+.micropico
+
+# MacOS
+.DS_Store
