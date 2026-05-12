@@ -1,6 +1,7 @@
 from machine import Pin, unique_id
 from utime import sleep, ticks_ms
 import dht
+import json
 
 from config import MQTT_BROKER, MQTT_PASSWORD, MQTT_USERNAME, SSID, SSID_PASSWORD
 from umqtt.simple import MQTTClient
@@ -60,7 +61,6 @@ def connect(ssid, password):
         
         print("WiFi connected!")
         internalLed.on()
-        print(wlan.ifconfig())
         
     except Exception as e:
         print("ERROR: Could not establish WiFi connection.")
@@ -72,8 +72,7 @@ connect(SSID, SSID_PASSWORD)
 # MQTT settings
 MQTT_PORT = "8883"
 CLIENT_ID = ubinascii.hexlify(unique_id())
-PUBLISH_TOPIC_TEMP = b"sensor/temperature"
-PUBLISH_TOPIC_HUMIDITY = b"sensor/humidity"
+PUBLISH_TOPIC = b"sensor"
 ssl_params = {
     "server_hostname": MQTT_BROKER
 }
@@ -81,7 +80,6 @@ ssl_params = {
 # Open MQTT connection
 mqttClient = MQTTClient(CLIENT_ID, MQTT_BROKER, keepalive=60, user=MQTT_USERNAME.encode("utf-8"), password=MQTT_PASSWORD.encode("utf-8"), ssl=True, ssl_params=ssl_params)
 mqttClient.connect()
-print(mqttClient.user)
 
 # Use sensor and internal led
 dht_sensor = DHT(16)
@@ -99,9 +97,12 @@ while True:
         temperature = dht_sensor.getTemperature()
 
         print(f"Temperature: {temperature:.1f}° C\nHumidity: {humidity:.1f}%")
+        sensorData = json.dumps({
+            "temperature": temperature,
+            "humidity": humidity
+        })
         externalLed.off()
-        mqttClient.publish(topic=PUBLISH_TOPIC_TEMP, msg=str(temperature).encode(), retain=False, qos=0)
-        mqttClient.publish(topic=PUBLISH_TOPIC_HUMIDITY, msg=str(humidity).encode(), retain=False, qos=0)
+        mqttClient.publish(topic=PUBLISH_TOPIC, msg=str(sensorData).encode(), retain=False, qos=0)
         sleep(1)
     except OSError as e:
         print(f"Sensor error: {e}")
