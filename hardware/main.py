@@ -75,7 +75,7 @@ connect(SSID, SSID_PASSWORD)
 MQTT_PORT = "8883"
 CLIENT_ID = ubinascii.hexlify(unique_id())
 PUBLISH_TOPIC = b"mm225mz/sensor"
-SUBSCRIBE_TOPIC = b"mm225mz/command"
+SUBSCRIBE_TOPIC = b"mm225mz/led/command"
 ssl_params = {
     "server_hostname": MQTT_BROKER
 }
