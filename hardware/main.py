@@ -87,10 +87,10 @@ mqttClient.connect()
 # Set up MQTT subscription
 def sub_cb(topic, msg):
     print(f'Callback message: {msg.decode()}')
-    command = msg.decode()
-    if command == "ON":
+    command = msg.decode().lower()
+    if command == "on" or command == "1" :
         externalLed.on()
-    elif command == "OFF":
+    elif command == "off" or command == "0":
         externalLed.off()
     else:
         print("ERROR: Could not process command.")
