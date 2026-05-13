@@ -8,9 +8,6 @@ from umqtt.simple import MQTTClient
 import ubinascii
 import network
 
-internalLed = Pin("LED", Pin.OUT)
-internalLed.on()
-
 # DHT class to simplify working with the sensor
 class DHT:
     def __init__(self, pin: int):
@@ -31,6 +28,10 @@ class DHT:
 
     def getHumidity(self):
         return self.sensor.humidity()
+
+
+# Set up internal led
+internalLed = Pin("LED", Pin.OUT)
 
 # SSID settings
 def connect(ssid, password):
@@ -56,7 +57,8 @@ def connect(ssid, password):
             internalLed.toggle()
             status = wlan.status()
             
-            print(f"Waiting for connection... (elapsed: {elapsed + 1}s, status: {status})")
+            elapsed+=1
+            print(f"Waiting for connection... (elapsed: {elapsed}s, status: {status})")
             sleep(1)
         
         print("WiFi connected!")
@@ -72,7 +74,8 @@ connect(SSID, SSID_PASSWORD)
 # MQTT settings
 MQTT_PORT = "8883"
 CLIENT_ID = ubinascii.hexlify(unique_id())
-PUBLISH_TOPIC = b"sensor"
+PUBLISH_TOPIC = b"mm225mz/sensor"
+SUBSCRIBE_TOPIC = b"mm225mz/command"
 ssl_params = {
     "server_hostname": MQTT_BROKER
 }
@@ -81,14 +84,28 @@ ssl_params = {
 mqttClient = MQTTClient(CLIENT_ID, MQTT_BROKER, keepalive=60, user=MQTT_USERNAME.encode("utf-8"), password=MQTT_PASSWORD.encode("utf-8"), ssl=True, ssl_params=ssl_params)
 mqttClient.connect()
 
-# Use sensor and internal led
+# Set up MQTT subscription
+def sub_cb(topic, msg):
+    print(f'Callback message: {msg.decode()}')
+    command = msg.decode()
+    if command == "ON":
+        externalLed.on()
+    elif command == "OFF":
+        externalLed.off()
+    else:
+        print("ERROR: Could not process command.")
+mqttClient.set_callback(sub_cb)
+mqttClient.subscribe(SUBSCRIBE_TOPIC)
+
+# Set up sensor and external led
 dht_sensor = DHT(16)
 externalLed = Pin(4, Pin.OUT)
 
 print("Starting external led and sensor...")
 while True:
     try:
-        externalLed.on()
+        # Check subscription message
+        mqttClient.check_msg()
         sleep(1)
 
         print('\nReading values...')
@@ -101,7 +118,7 @@ while True:
             "temperature": temperature,
             "humidity": humidity
         })
-        externalLed.off()
+        # externalLed.off()
         mqttClient.publish(topic=PUBLISH_TOPIC, msg=str(sensorData).encode(), retain=False, qos=0)
         sleep(1)
     except OSError as e:
@@ -110,4 +127,4 @@ while True:
         break
 externalLed.off()
 internalLed.off()
-print("Exiting...")
+print("\nExiting...")
