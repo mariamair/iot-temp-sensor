@@ -1,15 +1,23 @@
-# Secrets and environment variables
+# Secrets, environment variables and config files
 **/.env
 **/.env.**
 !**/.env.example
 **/config.py
-config.py
+**/**.conf
+passwd
+password
+acl
 
 # Firmware
 *.bin
 /firmware.bin
 firmware.bin
 .micropico
+
+# Volumes and Node modules
+.volumes
+node_modules/
+.npm
 
 # MacOS och VS Code
 .DS_Store

@@ -5,7 +5,6 @@ import json
 
 from config import MQTT_BROKER, MQTT_PASSWORD, MQTT_USERNAME, SSID, SSID_PASSWORD
 from umqtt.simple import MQTTClient
-import ubinascii
 import network
 
 # DHT class to simplify working with the sensor
@@ -61,7 +60,7 @@ def connect(ssid, password):
             print(f"Waiting for connection... (elapsed: {elapsed}s, status: {status})")
             sleep(1)
         
-        print("WiFi connected!")
+        print("-> Connected to WiFi.")
         internalLed.on()
         
     except Exception as e:
@@ -73,16 +72,28 @@ connect(SSID, SSID_PASSWORD)
 
 # MQTT settings
 MQTT_PORT = "8883"
-CLIENT_ID = ubinascii.hexlify(unique_id())
-PUBLISH_TOPIC = b"mm225mz/sensor"
-SUBSCRIBE_TOPIC = b"mm225mz/led/command"
+CLIENT_ID="pico_w"
+PUBLISH_TOPIC = b"mm225mz/sensors/dht"
+SUBSCRIBE_TOPIC = b"mm225mz/commands/led"
 ssl_params = {
     "server_hostname": MQTT_BROKER
 }
 
 # Open MQTT connection
-mqttClient = MQTTClient(CLIENT_ID, MQTT_BROKER, keepalive=60, user=MQTT_USERNAME.encode("utf-8"), password=MQTT_PASSWORD.encode("utf-8"), ssl=True, ssl_params=ssl_params)
-mqttClient.connect()
+mqttClient = MQTTClient(
+    client_id=CLIENT_ID, 
+    server=MQTT_BROKER, 
+    user=MQTT_USERNAME.encode("utf-8"),password=MQTT_PASSWORD.encode("utf-8"), 
+    keepalive=60, 
+    port=8883,
+    ssl=True, 
+    ssl_params=ssl_params
+    )
+try:
+    mqttClient.connect()
+    print("-> Connected to MQTT broker.")
+except Exception as e:
+    print(f"Failed to connect: {e}")
 
 # Set up MQTT subscription
 def sub_cb(topic, msg):
@@ -118,7 +129,6 @@ while True:
             "temperature": temperature,
             "humidity": humidity
         })
-        # externalLed.off()
         mqttClient.publish(topic=PUBLISH_TOPIC, msg=str(sensorData).encode(), retain=False, qos=0)
         sleep(1)
     except OSError as e:
