@@ -4,9 +4,12 @@
 !**/.env.example
 **/config.py
 **/**.conf
+!**/mosquitto/mosquitto.example.conf
+!**/telegraf/telegraf.example.conf
 passwd
 password
 acl
+!acl.example
 
 # Firmware
 *.bin
