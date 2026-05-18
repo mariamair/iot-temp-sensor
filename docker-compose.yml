@@ -3,7 +3,7 @@ services:
     image: eclipse-mosquitto:2
     restart: unless-stopped
     ports:
-      - "8883:8883"
+      - "${MOSQUITTO_PORT}:8883"
     volumes:
       - ./mosquitto/mosquitto.prod.conf:/mosquitto/config/mosquitto.conf:ro
       - ./mosquitto/passwd:/etc/mosquitto/passwd
@@ -13,7 +13,6 @@ services:
   
   telegraf:
     image: telegraf:latest
-    container_name: telegraf
     restart: unless-stopped
     volumes:
       - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
@@ -27,7 +26,7 @@ services:
     env_file:
       - .env
     ports:
-      - "127.0.0.1:8086:8086"
+      - "${INFLUXDB_PORT}:8086"
     volumes:
       - ./.volumes/influxdb/:/var/lib/influxdb2
     healthcheck:
@@ -36,6 +35,18 @@ services:
       timeout: 5s
       retries: 5
       start_period: 30s
+
+  grafana:
+    image: grafana/grafana:latest
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "${GRAFANA_PORT}:3000"
+    volumes:
+      - ./grafana/data:/var/lib/grafana
+    depends_on:
+      - influxdb
 
 volumes:
   mosquitto_data:
