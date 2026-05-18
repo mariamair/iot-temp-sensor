@@ -1,0 +1,23 @@
+# Admin
+# - full access
+user admin
+topic readwrite #
+
+# Sensor
+# - can only publish to its own namespace
+# - can read commands from its own namespace
+user sensor
+topic write my-namespace/sensors/#
+topic read my-namespace/commands/#
+
+# Telegraf
+# - can only read sensor data
+user telegraf
+topic read my-namespace/sensors/#
+
+# Client
+# - can only read sensor data
+# - can write commands to the sensor namespace
+user client
+topic read my-namespace/sensors/#
+topic write my-namespace/commands/#
