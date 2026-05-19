@@ -65,7 +65,7 @@ jobs:
         run: npm ci --prefix client
 
       - name: Run ESLint
-        run: npx eslint ./client/src
+        run: npm run lint --prefix client
 
   deploy:
     name: Deploy to Production
