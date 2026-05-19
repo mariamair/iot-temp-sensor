@@ -14,6 +14,8 @@ services:
   telegraf:
     image: telegraf:latest
     restart: unless-stopped
+    env_file:
+      - .env
     volumes:
       - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
     depends_on:
