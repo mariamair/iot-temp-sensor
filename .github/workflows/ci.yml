@@ -87,6 +87,8 @@ jobs:
       PRODUCTION_HOST: ${{ secrets.PRODUCTION_HOST }}
       PRODUCTION_HOST_USER: ${{ secrets.PRODUCTION_HOST_USER }}
       PRODUCTION_HOST_DEPLOY_PATH: ${{ secrets.PRODUCTION_HOST_DEPLOY_PATH }}
+      REGISTRY: ghcr.io/${{ github.repository }}
+      IMAGE_TAG: ${{ github.sha }}
     steps:
       - uses: actions/checkout@v5
 
@@ -113,6 +115,13 @@ jobs:
           scp -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519 \
             docker-compose.yml \
             $PRODUCTION_HOST_USER@$PRODUCTION_HOST:$PRODUCTION_HOST_DEPLOY_PATH/
+
+      - name: Update .env file
+        run: |
+          ssh -i ~/.ssh/id_ed25519 $PRODUCTION_HOST_USER@$PRODUCTION_HOST << EOF
+            cd $PRODUCTION_HOST_DEPLOY_PATH \
+            echo "REGISTRY=$REGISTRY" >> .env \
+            echo "IMAGE_TAG=$IMAGE_TAG" >> .env \
 
       - name: Pull and Deploy Docker Image via SSH
         run: |
