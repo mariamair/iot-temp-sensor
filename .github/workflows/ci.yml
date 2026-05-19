@@ -40,7 +40,7 @@ jobs:
             client
       
       - name: Push client image to GHCR
-        rrun: |
+        run: |
           docker push $REGISTRY/client:${IMAGE_TAG}
           docker push $REGISTRY/client:main
           docker push $REGISTRY/client:latest
