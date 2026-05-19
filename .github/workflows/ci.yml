@@ -119,7 +119,7 @@ jobs:
       - name: Pull and deploy Docker Image via SSH
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519 \
-            $PRODUCTION_HOST_USER@$PRODUCTION_HOST << 'EOF'
+            $PRODUCTION_HOST_USER@$PRODUCTION_HOST << EOF
             cd $PRODUCTION_HOST_DEPLOY_PATH
             echo "REGISTRY=$REGISTRY" >> .env
             echo "IMAGE_TAG=$IMAGE_TAG" >> .env
