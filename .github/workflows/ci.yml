@@ -51,10 +51,21 @@ jobs:
     if: ${{ github.event.inputs.run_lint_client != 'false' }}
     needs: build 
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
-      - run: npm install
-      - run: npx eslint ./client/src
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+          cache: 'npm'
+          cache-dependency-path: 'client/package-lock.json'
+
+      - name: Install dependencies
+        run: npm ci --prefix client
+
+      - name: Run ESLint
+        run: npx eslint ./client/src
 
   deploy:
     name: Deploy to Production
