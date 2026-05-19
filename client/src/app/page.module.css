@@ -1,0 +1,87 @@
+.main {
+  flex: 1;
+  display: flex;
+  width: 100%;
+  max-width: 800px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 120px 60px;
+}
+
+.main h1 {
+  max-width: 320px;
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 48px;
+  letter-spacing: -2.4px;
+  text-wrap: balance;
+  color: var(--text-highlight);
+}
+
+.main .text {
+  max-width: 440px;
+  font-size: 18px;
+  line-height: 32px;
+  text-wrap: balance;
+  color: var(--text-primary);
+}
+
+.cardContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.card {
+  background-color: var(--foreground);
+  border-radius: 0.3rem;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+}
+
+.card label {
+  color: var(--button-color);
+}
+
+.toggleButton {
+  background-color: var(--button-background);
+  border: 1px solid var(--button-border);
+  border-radius: 99px;
+  width: 50px;
+  height: 28px;
+  transition: background-color 0.1s ease, border-color 0.2s ease;
+  cursor: pointer;
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.748);
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.toggleButton .thumb {
+  height: 20px;
+  width: 20px;
+  background-color: var(--background-highlight);
+  border-radius: 99px;
+  transform: translatex(0);
+  transition: left 0.15s ease;
+  position: absolute;
+  left: 3px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.toggleButton.isOn {
+  background-color: var(--color-secondary-green);
+}
+
+.toggleButton:hover {
+  border-color: var(--button-border-hover);
+}
+
+.toggleButton.toggleButton.isOn .thumb {
+  left: calc(50px - 25px);
+}
