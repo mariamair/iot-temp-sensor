@@ -26,3 +26,4 @@ node_modules/
 # MacOS och VS Code
 .DS_Store
 .vscode
+**.code-workspace
