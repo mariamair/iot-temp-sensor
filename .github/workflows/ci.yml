@@ -71,7 +71,7 @@ jobs:
         working-directory: client
 
       - name: Run ESLint
-        run: npm run lint
+        run: ./node_modules/.bin/eslint ./src
         working-directory: client
 
   deploy:
