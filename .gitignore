@@ -21,6 +21,7 @@ firmware.bin
 .volumes
 node_modules/
 .npm
+.next
 
 # MacOS och VS Code
 .DS_Store
