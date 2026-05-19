@@ -50,5 +50,13 @@ services:
     depends_on:
       - influxdb
 
+  client:
+    image: ${REGISTRY}/client:${IMAGE_TAG:-latest}
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "${FRONTEND_PORT}:3000"
+
 volumes:
   mosquitto_data:
