@@ -65,7 +65,7 @@ jobs:
         run: npm ci --prefix client
 
       - name: Run ESLint
-        run: npm run Lint
+        run: npm run lint
         working-directory: client
 
   deploy:
