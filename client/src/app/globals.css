@@ -5,6 +5,7 @@
   --color-secondary-medium-grey: #929292;
   --color-secondary-dark-grey: #4a4a4a;
   --color-secondary-white: #f8fcf7;
+  --color-secondary-yellow: #ffff00;
   --color-secondary-green: #035914;
   --color-secondary-red: #880101;
   
@@ -18,11 +19,10 @@
   --text-dark: var(--color-primary);
 
   --button-background: var(--color-secondary-grey);
-  --button-background-hover: var(--color-secondary-medium-grey);
+  --button-background-hover: var(--color-secondary-dark-grey);
   --button-border: var(--color-secondary-medium-grey);
-  --button-border-hover: var(--color-secondary-dark-grey);
   --button-color: var(--color-primary);
-  --button-color-hover: #ffff00;
+  --button-color-hover: var(--color-secondary-yellow);
 }
 
 html {
@@ -39,6 +39,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  align-items: center;
   background: var(--background);
   color: var(--text-primary);
   font-family: Arial, Helvetica, sans-serif;
@@ -65,11 +66,12 @@ button, a {
   color: var(--button-color);
   font-size: 1rem;
   padding: 0.4rem 0.6rem;
+  transition: background-color 0.1s ease;
 }
 
 button:hover, a:hover {
+  background-color: var(--button-background-hover);
   color: var(--button-color-hover);
-  border-color: var(--button-border-hover);
   cursor: pointer;
 }
 
@@ -96,4 +98,6 @@ footer {
   color: var(--text-dark);
   text-align: center;
   padding: 0.8rem;
+  align-self: normal;
+  justify-self: flex-end;
 }

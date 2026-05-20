@@ -7,6 +7,7 @@
 'use client'
 
 import styles from './page.module.css'
+import Image from 'next/image'
 import { useState } from 'react'
 
 export default function Home() {
@@ -38,22 +39,42 @@ export default function Home() {
 
   return (
     <main className={styles.main}>
-      <h1>IoT project</h1>
-      <p className={styles.text}>Toggle the led light or display a Grafana snapshot of the sensor data.</p>
-      <div className={styles.cardContainer}>
-        <div className={styles.card}>
-          <label>Led</label>
-          <button
-            className={buttonClass}
-            onClick={handleClick}>
-            <div className={styles.thumb}></div>
-          </button>
-        </div>
-        <div className={styles.card}>
-          <label>Sensor data</label>
-          <a target="_blank" href="https://grafana.mariamair.se/dashboard/snapshot/XL1AiMc8FpChgK8x961chGrM0ak87NfQ">Open snapshot</a>
+    
+      <div className={styles.container}>
+        <h1>IoT project</h1>
+        <p className={styles.text}>Toggle the led light or display a Grafana snapshot of the sensor data.</p>
+        <div className={styles.buttonContainer}>
+          <div className={styles.card}>
+            <label>Led</label>
+            <button
+              className={buttonClass}
+              onClick={handleClick}>
+              <div className={styles.thumb}></div>
+            </button>
+          </div>
+          <div className={styles.card}>
+            <label>Sensor data</label>
+            <a target="_blank" href="https://grafana.mariamair.se/dashboard/snapshot/rpE1YjdqbmZYBznM2WgKxb6tv3hWRvLV">Open snapshot</a>
+          </div>
         </div>
       </div>
+
+      <Image
+        src="/iot-hardware.png"
+        alt="IoT hardware with sensor and led"
+        width={300}
+        height={300}
+        loading="eager"
+        className={styles.image}/>
+      <div className={styles.list}>
+        <h3>Hardware setup</h3>
+        <ul>
+          <li>Raspberry Pi Pico W</li>
+          <li>Led light</li>
+          <li>DHT22 temperature and humidity sensor</li>
+        </ul>
+      </div>
+
     </main>
   )
 }

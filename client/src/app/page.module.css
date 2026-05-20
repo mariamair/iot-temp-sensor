@@ -1,36 +1,69 @@
 .main {
   flex: 1;
-  display: flex;
-  width: 100%;
-  max-width: 800px;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 24px;
-  padding: 120px 60px;
+  display: grid;
+  grid-template-columns: 300px;
+  grid-template-rows: 300px 300px 300px;
+  grid-template-areas: 
+  "panel1"
+  "panel2"
+  "panel3";
+  gap: 36px;
+  padding: 120px 60px 0;
 }
 
-.main h1 {
-  max-width: 320px;
+.container {
+  grid-area: panel1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  border-bottom: 1px solid var(--foreground);
+}
+
+.container h1 {
+  font-family: 'Courier New', Courier, monospace;
   font-size: 40px;
-  font-weight: 600;
   line-height: 48px;
-  letter-spacing: -2.4px;
   text-wrap: balance;
   color: var(--text-highlight);
 }
 
-.main .text {
-  max-width: 440px;
+.text {
   font-size: 18px;
   line-height: 32px;
   text-wrap: balance;
   color: var(--text-primary);
 }
 
-.cardContainer {
+.list {
+  grid-area: panel3;
+  font-size: 18px;
+  line-height: 28px;
+  text-wrap: balance;
+  color: var(--text-primary);
+  margin-left: 20px;
+}
+
+.list h3 {
+  font-family: 'Courier New', Courier, monospace;
+  color: var(--text-highlight);
+  margin-bottom: 10px;
+}
+
+.list ul li {
+  list-style-type: square;
+  margin-left: 20px;
+}
+
+.image {
+  grid-area: panel2;
+  border-radius: 5px;
+}
+
+.buttonContainer {
   display: flex;
   flex-direction: row;
-  gap: 20px;
+  justify-content: space-between;
+  gap: 28px;
 }
 
 .card {
@@ -52,8 +85,8 @@
   background-color: var(--button-background);
   border: 1px solid var(--button-border);
   border-radius: 99px;
-  width: 50px;
-  height: 28px;
+  width: 60px;
+  height: 32px;
   transition: background-color 0.1s ease, border-color 0.2s ease;
   cursor: pointer;
   box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.748);
@@ -62,8 +95,8 @@
 }
 
 .toggleButton .thumb {
-  height: 20px;
-  width: 20px;
+  height: 24px;
+  width: 24px;
   background-color: var(--background-highlight);
   border-radius: 99px;
   transform: translatex(0);
@@ -78,10 +111,43 @@
   background-color: var(--color-secondary-green);
 }
 
-.toggleButton:hover {
-  border-color: var(--button-border-hover);
+.toggleButton.isOn .thumb {
+  left: calc(60px - 28px);
 }
 
-.toggleButton.toggleButton.isOn .thumb {
-  left: calc(50px - 25px);
+@media (max-width: 630px) {
+  .container h1 {
+    font-size: 32px;
+    line-height: 40px;
+  }
+}
+
+@media (max-height: 1000px) {
+  .main {
+    grid-template-rows: 300px 300px 160px;
+    padding: 30px 60px 0;
+  }
+}
+
+@media (max-height: 900px) {
+  .main {
+    grid-template-rows: 280px 300px 160px;
+    gap: 18px;
+    padding: 30px 60px 0;
+  }
+
+  .container h1 {
+    font-size: 24px;
+    line-height: 32px;
+  }
+
+  .text {
+    font-size: 16px;
+    line-height: 32px;
+  }
+
+  .list {
+    font-size: 16px;
+    line-height: 24px;
+  }
 }
