@@ -54,7 +54,7 @@ export default function Home() {
           </div>
           <div className={styles.card}>
             <label>Sensor data</label>
-            <a target="_blank" href="https://grafana.mariamair.se/dashboard/snapshot/PLB5B9jhaybZ8OZnhzQIYMNx7p9ANVSY">Open snapshot</a>
+            <a target="_blank" href="https://grafana.mariamair.se/dashboard/snapshot/FnSn0LJDV80c554TXeaXjYuRI30cWoFr">Open snapshot</a>
           </div>
         </div>
       </div>
