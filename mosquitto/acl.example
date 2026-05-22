@@ -16,8 +16,6 @@ user telegraf
 topic read my-namespace/sensors/#
 
 # Client
-# - can only read sensor data
-# - can write commands to the sensor namespace
+# - can only write commands to the sensor namespace
 user client
-topic read my-namespace/sensors/#
 topic write my-namespace/commands/#
