@@ -13,6 +13,7 @@ services:
   
   telegraf:
     image: telegraf:latest
+    hostname: telegraf
     restart: unless-stopped
     env_file:
       - .env
