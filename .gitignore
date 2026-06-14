@@ -23,7 +23,13 @@ node_modules/
 .npm
 .next
 
+# InfluxDB
+influxdb/queries
+influxdb/tasks
+!influxdb/tasks/**.example
+
 # MacOS och VS Code
 .DS_Store
 .vscode
 **.code-workspace
+**.drawio
