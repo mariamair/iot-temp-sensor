@@ -4,6 +4,7 @@ services:
     restart: unless-stopped
     ports:
       - "${MOSQUITTO_PORT}:8883"
+      - "127.0.0.1:9001:9001"
     volumes:
       - ./mosquitto/mosquitto.prod.conf:/mosquitto/config/mosquitto.conf:ro
       - ./mosquitto/passwd:/etc/mosquitto/passwd
