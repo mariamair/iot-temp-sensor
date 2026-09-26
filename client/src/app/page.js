@@ -60,7 +60,7 @@ export default function Home() {
       </div>
 
       <Image
-        src="/iot-hardware.png"
+        src="/iot/iot-hardware.png"
         alt="IoT hardware with sensor and led"
         width={300}
         height={300}
