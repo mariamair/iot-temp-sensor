@@ -8,6 +8,7 @@
 const nextConfig = {
   reactCompiler: true,
   output: 'standalone',
+  basePath: '/iot',
 }
 
 export default nextConfig
