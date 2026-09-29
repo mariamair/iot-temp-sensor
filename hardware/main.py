@@ -7,6 +7,9 @@ from config import MQTT_BROKER, MQTT_PASSWORD, MQTT_USERNAME, SSID, SSID_PASSWOR
 from umqtt.simple import MQTTClient
 import network
 
+# Settings
+PUBLISH_INTERVAL_S = 600
+
 # DHT class to simplify working with the sensor
 class DHT:
     def __init__(self, pin: int):
@@ -45,7 +48,7 @@ def connect(ssid, password):
         # Disable power saving mode for better reliability with hotspots
         wlan.config(pm=0xa11140)
 
-        print(f"Connecting to {ssid}...")
+        print(f"Connecting to WIFI: {ssid}...")
         wlan.connect(ssid, password)
         
         # Wait a bit longer for WPA2/WPA3 negotiation
@@ -84,12 +87,13 @@ mqttClient = MQTTClient(
     client_id=CLIENT_ID, 
     server=MQTT_BROKER, 
     user=MQTT_USERNAME.encode("utf-8"),password=MQTT_PASSWORD.encode("utf-8"), 
-    keepalive=60, 
+    keepalive=PUBLISH_INTERVAL_S + 30, 
     port=8883,
     ssl=True, 
     ssl_params=ssl_params
     )
 try:
+    print(f"Connecting to MQTT broker: {MQTT_BROKER}...")
     mqttClient.connect()
     print("-> Connected to MQTT broker.")
 except Exception as e:
@@ -117,7 +121,6 @@ while True:
     try:
         # Check subscription message
         mqttClient.check_msg()
-        sleep(1)
 
         print('\nReading values...')
         dht_sensor.measure()
@@ -130,7 +133,7 @@ while True:
             "humidity": humidity
         })
         mqttClient.publish(topic=PUBLISH_TOPIC, msg=str(sensorData).encode(), retain=False, qos=0)
-        sleep(1)
+        sleep(PUBLISH_INTERVAL_S)
     except OSError as e:
         print(f"Sensor error: {e}")
     except KeyboardInterrupt:
